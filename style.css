@@ -963,7 +963,28 @@ footer > .footer-content > p {
   }
 
   .hero-trust {
-    display: none;
+    width: 100%;
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 1rem;
+    align-items: center;
+  }
+
+  .trust-item {
+    gap: 0.1rem;
+  }
+
+  .trust-num {
+    font-size: 0.95rem;
+  }
+
+  .trust-label {
+    font-size: 0.65rem;
+  }
+
+  .trust-divider {
+    width: 1px;
+    height: 30px;
   }
 
   .hero-actions {
