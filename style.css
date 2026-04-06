@@ -811,22 +811,48 @@ footer > .footer-content > p {
     border-radius: var(--radius-sm);
   }
 
+  /* Hero mobile */
+  .hero {
+    min-height: auto;
+    padding: 5rem 1rem 3rem;
+  }
+
   .hero-content h1 {
-    font-size: 1.8rem;
+    font-size: 1.65rem;
   }
 
   .hero-content p {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
   }
 
   .hero-trust {
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    flex-wrap: wrap;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    align-items: center;
   }
 
+  .trust-divider {
+    width: 40px;
+    height: 1px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-actions a {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+  }
+
+  /* Steps mobile */
   .steps {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .step {
@@ -834,36 +860,96 @@ footer > .footer-content > p {
     display: flex;
     gap: 1rem;
     align-items: flex-start;
+    padding: 1.25rem;
   }
 
   .step-icon {
     margin: 0;
     flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+  }
+
+  .step h3 {
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+  }
+
+  .step p {
+    font-size: 0.85rem;
+  }
+
+  /* Banner mobile */
+  .banner-cane {
+    padding: 3rem 1.25rem;
+  }
+
+  .banner-content blockquote {
+    font-size: 1.05rem;
+  }
+
+  /* Form mobile */
+  .section-alt {
+    padding: 3rem 1rem;
   }
 
   .form-wrapper {
     grid-template-columns: 1fr;
   }
 
-  .form-info {
-    position: static;
+  .form-section-title {
+    margin-top: 1.5rem;
   }
 
-  .form-row {
-    grid-template-columns: 1fr;
+  .form-info {
+    position: static;
+    order: -1;
+  }
+
+  .form-info h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-info ul {
+    font-size: 0.8rem;
+  }
+
+  .form-info-icon {
+    display: none;
+  }
+
+  .form-container {
+    padding: 1.5rem;
   }
 
   .form-small {
     flex-direction: column;
   }
 
+  .form-section-title .optional {
+    float: right;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  /* Footer mobile */
   .footer-content {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
   }
 
-  .banner-content blockquote {
-    font-size: 1.1rem;
+  /* Status mobile */
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
   }
 }

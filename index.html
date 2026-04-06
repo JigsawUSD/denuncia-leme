@@ -131,6 +131,9 @@
               <option value="saude">Saúde (postos, atendimento, falta de médicos)</option>
               <option value="educacao">Educação (escolas, creches, transporte escolar)</option>
               <option value="seguranca">Segurança pública</option>
+              <option value="criminalidade">Criminalidade (roubo, furto, tráfico)</option>
+              <option value="importunacao">Importunação sexual</option>
+              <option value="ameaca">Ameaça / Intimidação</option>
               <option value="saneamento">Saneamento / Água / Esgoto</option>
               <option value="meio_ambiente">Meio ambiente (poluição, desmatamento)</option>
               <option value="transporte">Transporte público / ônibus</option>
@@ -147,18 +150,18 @@
             <label for="descricao">Descrição detalhada *</label>
             <textarea id="descricao" name="descricao" placeholder="Descreva o problema com detalhes: quando começou, há riscos, se já foi reportado antes..."></textarea>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="bairro">Bairro *</label>
-              <input type="text" id="bairro" name="bairro" placeholder="Ex: Jardim São Paulo" required>
-            </div>
-            <div class="form-group">
-              <label for="rua">Rua / Endereço</label>
-              <input type="text" id="rua" name="rua" placeholder="Ex: Rua das Flores, 120">
-            </div>
+
+          <div class="form-section-title">Localização do problema</div>
+          <div class="form-group">
+            <label for="bairro">Bairro onde ocorre o problema *</label>
+            <input type="text" id="bairro" name="bairro" placeholder="Ex: Jardim São Paulo" required>
+          </div>
+          <div class="form-group">
+            <label for="rua">Rua / Endereço aproximado *</label>
+            <input type="text" id="rua" name="rua" placeholder="Ex: Rua das Flores, próximo ao nº 120" required>
           </div>
 
-          <div class="form-section-title">Evidência (opcional)</div>
+          <div class="form-section-title">Evidência <span class="optional">(opcional)</span></div>
           <div class="form-group">
             <label>Foto do problema</label>
             <label class="file-upload" id="file-drop-zone">
