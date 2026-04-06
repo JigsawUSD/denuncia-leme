@@ -33,17 +33,27 @@ body {
   background: linear-gradient(90deg, #f59e0b, #f97316);
   color: #1a1a1a;
   text-align: center;
-  padding: 0.6rem 1rem;
+  padding: 0.45rem 1rem;
   font-size: 0.82rem;
   font-weight: 500;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
   z-index: 2000;
 }
 
 .construction-icon {
-  display: inline-block;
-  margin-right: 0.3rem;
+  display: inline-flex;
+  align-items: center;
   animation: spin 3s linear infinite;
+  font-size: 0.9rem;
 }
 
 @keyframes spin {
@@ -53,12 +63,12 @@ body {
 
 /* ===== NAV ===== */
 body {
-  padding-top: 100px;
+  padding-top: 96px;
 }
 
 header {
   position: fixed;
-  top: 36px;
+  top: 32px;
   width: 100%;
   z-index: 1000;
   background: rgba(11,31,58,0.95);
@@ -894,6 +904,24 @@ footer > .footer-content > p {
 
 /* ===== MOBILE ===== */
 @media (max-width: 900px) {
+  body {
+    padding-top: 90px;
+  }
+
+  .construction-banner {
+    height: 28px;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.75rem;
+  }
+
+  .construction-subtext {
+    display: none;
+  }
+
+  header {
+    top: 28px;
+  }
+
   .menu-toggle {
     display: block;
   }
