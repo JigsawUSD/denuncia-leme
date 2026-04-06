@@ -28,10 +28,37 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ===== CONSTRUCTION BANNER ===== */
+.construction-banner {
+  background: linear-gradient(90deg, #f59e0b, #f97316);
+  color: #1a1a1a;
+  text-align: center;
+  padding: 0.6rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  position: relative;
+  z-index: 2000;
+}
+
+.construction-icon {
+  display: inline-block;
+  margin-right: 0.3rem;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* ===== NAV ===== */
+body {
+  padding-top: 100px;
+}
+
 header {
   position: fixed;
-  top: 0;
+  top: 36px;
   width: 100%;
   z-index: 1000;
   background: rgba(11,31,58,0.95);
