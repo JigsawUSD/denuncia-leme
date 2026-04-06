@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Denuncia Leme - Portal Cidadão</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="nav-container">
+        <a href="#" class="logo">Denuncia Leme</a>
+        <ul class="nav-links">
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#denuncia">Denunciar</a></li>
+          <li><a href="#status">Acompanhar</a></li>
+        </ul>
+        <button class="menu-toggle" aria-label="Abrir menu">&#9776;</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <div class="hero-content">
+        <h1>Sua voz faz diferença</h1>
+        <p>Denuncie problemas na sua região e ajude a transformar Leme. Infraestrutura, segurança, saúde, iluminação e muito mais — tudo começa na sua denúncia.</p>
+        <a href="#denuncia" class="btn-primary">Fazer Denúncia</a>
+      </div>
+    </section>
+
+    <section id="sobre" class="section">
+      <h2>Como funciona?</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">1</div>
+          <h3>Registre</h3>
+          <p>Preencha o formulário com detalhes do problema encontrados na sua região.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">2</div>
+          <h3>Compilamos</h3>
+          <p>Organizamos as denúncias e geramos relatórios para enviar aos órgãos competentes e imprensa.</p>
+        </div>
+        <div class="step">
+          <div class="step-icon">3</div>
+          <h3>Cobramos</h3>
+          <p>Encaminhamos as demandas às emissoras e portais para cobrar uma resposta.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="denuncia" class="section section-dark">
+      <h2>Fazer Denúncia</h2>
+      <form id="form-denuncia" class="form-container" enctype="multipart/form-data" method="POST">
+        <div class="form-group">
+          <label for="tipo">Tipo de Denúncia *</label>
+          <select id="tipo" name="tipo" required>
+            <option value="">Selecione...</option>
+            <option value="infraestrutura">Infraestrutura (buracos, calçadas, etc.)</option>
+            <option value="iluminacao">Iluminação Pública</option>
+            <option value="saude">Saúde (postos, atendimento, etc.)</option>
+            <option value="educacao">Educação (escolas, creches, etc.)</option>
+            <option value="seguranca">Segurança Pública</option>
+            <option value="saneamento">Saneamento / Água / Esgoto</option>
+            <option value="meio_ambiente">Meio Ambiente</option>
+            <option value="transporte">Transporte / Ônibus</option>
+            <option value="obras">Obras Paralisadas</option>
+            <option value="materia">Mau Uso de Verba Pública</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="titulo">Título da Denúncia *</label>
+          <input type="text" id="titulo" name="titulo" placeholder="Resuma o problema..." required maxlength="120">
+        </div>
+
+        <div class="form-group">
+          <label for="descricao">Descrição Detalhada *</label>
+          <textarea id="descricao" name="descricao" placeholder="Descreva com detalhes o problema, quando começou, se há riscos..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bairro">Bairro *</label>
+            <input type="text" id="bairro" name="bairro" placeholder="Nome do bairro" required>
+          </div>
+          <div class="form-group">
+            <label for="rua">Rua / Endereço</label>
+            <input type="text" id="rua" name="rua" placeholder="Rua, número aprox.">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="foto">Foto / Anexo</label>
+          <div class="file-upload">
+            <input type="file" id="foto" name="foto" accept="image/*">
+            <span>Clique para adicionar uma foto do problema</span>
+          </div>
+          <div id="preview-container" class="hidden">
+            <img id="preview" src="" alt="Preview">
+            <button type="button" id="remove-preview">&times;</button>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+          <label for="nome">Seu Nome *</label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+        </div>
+
+        <div class="form-group">
+          <label for="contato">E-mail / Telefone (opcional)</label>
+          <input type="text" id="contato" name="contato" placeholder="Para receber retorno">
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="anonimo" name="anonimo">
+            <span>Quero que minha denúncia seja <strong>anônima</strong></span>
+          </label>
+        </div>
+
+        <button type="submit" id="btn-submit" class="btn-primary btn-full">Enviar Denúncia</button>
+        <p id="form-status" class="form-status hidden"></p>
+      </form>
+    </section>
+
+    <section id="status" class="section">
+      <h2>Acompanhar Denúncia</h2>
+      <p>Insira o número do protocolo recebido para acompanhar o status da sua denúncia.</p>
+      <form id="form-status-check" class="form-container form-small">
+        <input type="text" id="protocolo" name="protocolo" placeholder="Ex: #LEM-2026-XXXX">
+        <button type="submit" class="btn-primary">Buscar</button>
+      </form>
+      <div id="status-result" class="status-result hidden"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Denuncia Leme - Projeto Cidadão 2026. Feito pela população, para a população.</p>
+  </footer>
+
+  <script>
+    // CONFIGURAÇÃO: Cole aqui a URL do seu Web App do Apps Script
+    const APPSCRIPT_URL = 'SUA_URL_DO_APPS_SCRIPT_AQUI';
+
+    // Mobile menu toggle
+    document.querySelector('.menu-toggle').addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.toggle('open');
+    });
+
+    // Photo preview
+    const fotoInput = document.getElementById('foto');
+    const previewContainer = document.getElementById('preview-container');
+    const previewImg = document.getElementById('preview');
+    const removeBtn = document.getElementById('remove-preview');
+
+    fotoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          previewImg.src = ev.target.result;
+          previewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    removeBtn.addEventListener('click', () => {
+      fotoInput.value = '';
+      previewImg.src = '';
+      previewContainer.classList.add('hidden');
+    });
+
+    // Generate protocol
+    function generateProtocol() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const num = Math.floor(Math.random() * 9000 + 1000);
+      return `#LEM-${y}-${num}`;
+    }
+
+    // Form submission
+    document.getElementById('form-denuncia').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const btn = document.getElementById('btn-submit');
+      const status = document.getElementById('form-status');
+
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+      status.classList.add('hidden');
+      status.textContent = '';
+
+      try {
+        const form = e.target;
+        const formData = new FormData(form);
+        const protocolo = generateProtocol();
+        formData.append('protocolo', protocolo);
+
+        // Convert photo to base64 if exists
+        const fileInput = document.getElementById('foto');
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const reader = new FileReader();
+          await new Promise((resolve, reject) => {
+            reader.onload = () => {
+              formData.append('fotoBase64', reader.result.split(',')[1]);
+              formData.append('fotoNome', file.name);
+              resolve();
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+        }
+
+        if (APPSRIPT_URL === 'SUA_URL_DO_APPS_SCRIPT_AQUI') {
+          // Fallback: save locally for testing
+          const data = Object.fromEntries(formData);
+          let denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+          data.data = new Date().toLocaleString('pt-BR');
+          data.status = 'Pendente';
+          denuncias.push(data);
+          localStorage.setItem('denuncias', JSON.stringify(denuncias));
+
+          status.textContent = `Denúncia registrada com sucesso! Seu protocolo: ${protocolo}. (Salvo localmente — configure o Apps Script para envio real.)`;
+        } else {
+          // Send to Apps Script
+          const response = await fetch(APPSRIPT_URL, {
+            method: 'POST',
+            body: formData
+          });
+          const result = await response.json();
+          status.textContent = `Denúncia enviada com sucesso! Seu protocolo: ${protocolo}`;
+        }
+      } catch (err) {
+        status.textContent = 'Erro ao enviar. Tente novamente.';
+        console.error(err);
+      }
+
+      status.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = 'Enviar Denúncia';
+      form.reset();
+      previewContainer.classList.add('hidden');
+    });
+
+    // Status check (local)
+    document.getElementById('form-status-check').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const protocolo = document.getElementById('protocolo').value;
+      const result = document.getElementById('status-result');
+      const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+      const found = denuncias.find(d => d.protocolo === protocolo);
+
+      result.classList.remove('hidden');
+      if (found) {
+        result.innerHTML = `
+          <p><strong>Protocolo:</strong> ${found.protocolo}</p>
+          <p><strong>Status:</strong> ${found.status}</p>
+          <p><strong>Denúncia:</strong> ${found.titulo}</p>
+          <p><strong>Data:</strong> ${found.data}</p>
+        `;
+      } else {
+        result.innerHTML = '<p class="error">Protocolo não encontrado. Verifique se digitou corretamente.</p>';
+      }
+    });
+  </script>
+</body>
+</html>
