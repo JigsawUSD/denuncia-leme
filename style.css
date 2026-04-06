@@ -906,6 +906,7 @@ footer > .footer-content > p {
 @media (max-width: 900px) {
   body {
     padding-top: 90px;
+    background: #f8f9fa;
   }
 
   .construction-banner {
@@ -952,14 +953,21 @@ footer > .footer-content > p {
   .hero {
     min-height: 100vh;
     padding: 8rem 1.25rem 4rem;
+    background: #f0f4f8;
   }
 
   .hero-content h1 {
-    font-size: 2rem;
+    color: var(--azul-escuro);
   }
 
   .hero-content p {
-    font-size: 1rem;
+    color: var(--cinza-texto);
+  }
+
+  .hero-badge {
+    background: rgba(11,31,58,0.08);
+    border-color: rgba(11,31,58,0.12);
+    color: var(--azul-medio);
   }
 
   .hero-trust {
