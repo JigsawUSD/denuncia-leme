@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Denuncia Leme — Portal do Cidadão</title>
+  <meta name="description" content="Registre irregularidades e denúncias na cidade de Leme/SP. Gratuito, anônimo e seguro. Sua voz faz a diferença.">
+  <meta name="keywords" content="denúncia, Leme, irregularidades, infraestrutura, saúde, educação, segurança, cidadania">
+  <meta name="author" content="Denuncia Leme">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Denuncia Leme — Portal do Cidadão">
+  <meta property="og:description" content="Registre irregularidades da sua região em Leme/SP. Gratuito, anônimo e seguro.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jigsawusd.github.io/denuncia-leme/">
+  <meta property="og:locale" content="pt_BR">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -41,7 +53,7 @@
     <section id="inicio" class="hero">
       <div class="hero-pattern"></div>
       <div class="hero-overlay"></div>
-      <div class="hero-content">
+      <div class="hero-content reveal">
         <div class="hero-badge">Projeto Cidadão &mdash; Leme/SP</div>
         <h1>Leme merece mais.<br>Comece por você.</h1>
         <p>Registre irregularidades da sua região. Nós compilamos, documentamos e encaminhamos às emissoras e órgãos responsáveis para que a sua voz seja ouvida.</p>
@@ -70,27 +82,27 @@
 
     <!-- COMO FUNCIONA -->
     <section id="como-funciona" class="section">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="section-tag">TRANSPARÊNCIA</span>
         <h2>Como funciona?</h2>
         <p>Três passos simples para que sua denúncia chegue a quem precisa ouvir.</p>
       </div>
       <div class="steps">
-        <div class="step">
+        <div class="step reveal">
           <div class="step-icon">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
           </div>
           <h3>1. Registre</h3>
           <p>Descreva o problema, tire uma foto e informe a localização. Leva menos de 2 minutos.</p>
         </div>
-        <div class="step">
+        <div class="step reveal">
           <div class="step-icon">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H3v6l11 11L21 11l-6-6h-2M9 5l4-4 4 4M3 22l12-12"/></svg>
           </div>
           <h3>2. Compilamos</h3>
           <p>Organizamos as denúncias, geramos relatórios detalhados e cruzamos dados para dar mais força.</p>
         </div>
-        <div class="step">
+        <div class="step reveal">
           <div class="step-icon">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/></svg>
           </div>
@@ -102,12 +114,12 @@
 
     <!-- SOBRE O PROJETO -->
     <section id="sobre-projeto" class="section">
-      <div class="section-header">
+      <div class="section-header reveal">
         <span class="section-tag">SOBRE O PROJETO</span>
         <h2>Quem somos</h2>
       </div>
       <div class="about-content">
-        <div class="about-card">
+        <div class="about-card reveal">
           <h3>Sem fins lucrativos</h3>
           <p>Este site foi criado por um cidadão de Leme, sem qualquer vínculo partidário ou financeiro. <strong>Não ganhamos dinheiro com isso.</strong> Nossa única intenção é ajudar a população a cobrar o que é prometido em anos de eleição e durante o mandato.</p>
           <p>Acreditamos que a cidade só muda quando as pessoas têm acesso à informação e uma voz para registrar problemas reais, com fatos, sem meias palavras.</p>
@@ -271,135 +283,303 @@
   </footer>
 
   <script>
-    const APPSCRIPT_URL = 'SUA_URL_DO_APPS_SCRIPT_AQUI';
+    // ===================================================
+    // CONFIG
+    // ===================================================
+    const APPSCRIPT_URL = '';
+    const MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10 MB
 
-    // Mobile menu
-    document.querySelector('.menu-toggle').addEventListener('click', () => {
-      document.querySelector('.nav-links').classList.toggle('open');
-    });
+    // ===================================================
+    // UTILS
+    // ===================================================
+    function $(sel, root = document) { return root.querySelector(sel); }
+    function $$(sel, root = document) { return [...root.querySelectorAll(sel)]; }
 
-    // Close menu on link click
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.addEventListener('click', () => {
-        document.querySelector('.nav-links').classList.remove('open');
+    // ===================================================
+    // TOAST NOTIFICATIONS
+    // ===================================================
+    function showToast(msg, type = 'info', duration = 4000) {
+      let container = $('.toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+      }
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `<span class="toast-icon"></span><span class="toast-msg">${msg}</span>`;
+      container.appendChild(toast);
+      requestAnimationFrame(() => toast.classList.add('toast-in'));
+      setTimeout(() => {
+        toast.classList.remove('toast-in');
+        toast.classList.add('toast-out');
+        toast.addEventListener('animationend', () => toast.remove());
+      }, duration);
+    }
+
+    // ===================================================
+    // SCROLL REVEAL (IntersectionObserver)
+    // ===================================================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
       });
-    });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-    // Photo preview
-    const fotoInput = document.getElementById('foto');
-    const previewContainer = document.getElementById('preview-container');
-    const previewImg = document.getElementById('preview');
-    const removeBtn = document.getElementById('remove-preview');
+    function initReveal() {
+      $$('.reveal').forEach(el => revealObserver.observe(el));
+    }
 
-    fotoInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        if (file.size > 10 * 1024 * 1024) {
-          alert('A foto deve ter no máximo 10 MB.');
+    // ===================================================
+    // MOBILE MENU
+    // ===================================================
+    function initMobileMenu() {
+      const toggle = $('.menu-toggle');
+      const links = $('.nav-links');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', () => {
+        links.classList.toggle('open');
+        const isExpanded = links.classList.contains('open');
+        toggle.setAttribute('aria-expanded', isExpanded);
+      });
+      $$('a', links).forEach(a => {
+        a.addEventListener('click', () => links.classList.remove('open'));
+      });
+      // Close on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') links.classList.remove('open');
+      });
+    }
+
+    // ===================================================
+    // NAVBAR SCROLL EFFECT
+    // ===================================================
+    function initNavScroll() {
+      const header = $('header');
+      if (!header) return;
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 50);
+      }, { passive: true });
+    }
+
+    // ===================================================
+    // PHOTO PREVIEW + DRAG & DROP
+    // ===================================================
+    function initPhotoUpload() {
+      const fotoInput = $('#foto');
+      const previewContainer = $('#preview-container');
+      const previewImg = $('#preview');
+      const removeBtn = $('#remove-preview');
+      const dropZone = $('#file-drop-zone');
+      if (!fotoInput || !dropZone) return;
+
+      function showFile(file) {
+        if (file.size > MAX_PHOTO_SIZE) {
+          showToast('A foto deve ter no máximo 10 MB.', 'error');
           fotoInput.value = '';
+          return;
+        }
+        if (!file.type.startsWith('image/')) {
+          showToast('Por favor, selecione apenas imagens.', 'error');
           return;
         }
         const reader = new FileReader();
         reader.onload = (ev) => {
           previewImg.src = ev.target.result;
           previewContainer.classList.remove('hidden');
+          dropZone.classList.add('has-photo');
+          showToast('Foto carregada!', 'success');
         };
         reader.readAsDataURL(file);
       }
-    });
 
-    removeBtn.addEventListener('click', () => {
-      fotoInput.value = '';
-      previewImg.src = '';
-      previewContainer.classList.add('hidden');
-    });
+      fotoInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) showFile(file);
+      });
 
-    // Protocol
+      // Drag & Drop
+      ['dragenter', 'dragover'].forEach(evt => {
+        dropZone.addEventListener(evt, (e) => {
+          e.preventDefault();
+          dropZone.classList.add('dragging');
+        });
+      });
+      ['dragleave', 'drop'].forEach(evt => {
+        dropZone.addEventListener(evt, (e) => {
+          e.preventDefault();
+          dropZone.classList.remove('dragging');
+        });
+      });
+      dropZone.addEventListener('drop', (e) => {
+        const file = e.dataTransfer?.files[0];
+        if (file) {
+          fotoInput.files = e.dataTransfer.files;
+          showFile(file);
+        }
+      });
+
+      removeBtn.addEventListener('click', () => {
+        fotoInput.value = '';
+        previewImg.src = '';
+        previewContainer.classList.add('hidden');
+        dropZone.classList.remove('has-photo');
+      });
+    }
+
+    // ===================================================
+    // PROTOCOL GENERATOR
+    // ===================================================
     function generateProtocol() {
       const y = new Date().getFullYear();
       const num = Math.floor(Math.random() * 9000 + 1000);
       return `LEM-${y}-${num}`;
     }
 
-    // Submit
-    document.getElementById('form-denuncia').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('btn-submit');
-      const status = document.getElementById('form-status');
-      btn.disabled = true;
-      btn.textContent = 'Enviando...';
-      status.classList.add('hidden');
-      status.textContent = '';
+    // ===================================================
+    // DENÚNCIA FORM SUBMIT
+    // ===================================================
+    function initFormDenuncia() {
+      const form = $('#form-denuncia');
+      const btn = $('#btn-submit');
+      const status = $('#form-status');
+      const fotoInput = $('#foto');
+      if (!form || !btn) return;
 
-      try {
-        const form = e.target;
-        const formData = new FormData(form);
-        const protocolo = generateProtocol();
-        formData.append('protocolo', protocolo);
-        formData.append('data', new Date().toLocaleString('pt-BR'));
-
-        if (fotoInput.files.length > 0) {
-          const reader = new FileReader();
-          await new Promise((resolve, reject) => {
-            reader.onload = () => {
-              formData.append('fotoBase64', reader.result.split(',')[1]);
-              formData.append('fotoNome', fotoInput.files[0].name);
-              resolve();
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(fotoInput.files[0]);
-          });
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
         }
 
-        if (APPSRIPT_URL === 'SUA_URL_DO_APPS_SCRIPT_AQUI') {
-          let denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
-          denuncias.push(Object.fromEntries(formData));
-          localStorage.setItem('denuncias', JSON.stringify(denuncias));
-          status.textContent = `Denúncia registrada! Protocolo: ${protocolo}. Guarde este número. (Teste local — configure o Apps Script para funcionamento real.)`;
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+        btn.classList.add('loading');
+        status.classList.add('hidden');
+        status.textContent = '';
+
+        try {
+          const formData = new FormData(form);
+          const protocolo = generateProtocol();
+          formData.append('protocolo', protocolo);
+          formData.append('data', new Date().toLocaleString('pt-BR'));
+
+          if (fotoInput.files.length > 0) {
+            const reader = new FileReader();
+            await new Promise((resolve, reject) => {
+              reader.onload = () => {
+                formData.append('fotoBase64', reader.result.split(',')[1]);
+                formData.append('fotoNome', fotoInput.files[0].name);
+                resolve();
+              };
+              reader.onerror = reject;
+              reader.readAsDataURL(fotoInput.files[0]);
+            });
+          }
+
+          const isDemo = !APPSRIPT_URL || APPSCRIPT_URL === 'SUA_URL_DO_APPS_SCRIPT_AQUI';
+
+          if (isDemo) {
+            let denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+            denuncias.push(Object.fromEntries(formData));
+            localStorage.setItem('denuncias', JSON.stringify(denuncias));
+
+            status.textContent = `Denúncia registrada! Protocolo: ${protocolo}. Guarde este número.`;
+            status.className = 'form-status success';
+            showToast(`Protocolo gerado: ${protocolo}`, 'success', 6000);
+          } else {
+            await fetch(APPSRIPT_URL, { method: 'POST', body: formData });
+            status.textContent = `Denúncia enviada com sucesso! Protocolo: ${protocolo}`;
+            status.className = 'form-status success';
+            showToast('Denúncia enviada com sucesso!', 'success');
+          }
+        } catch (err) {
+          status.textContent = 'Erro ao enviar. Verifique sua conexão e tente novamente.';
+          status.className = 'form-status error';
+          showToast('Erro ao enviar a denúncia.', 'error');
+          console.error(err);
+        }
+
+        status.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Enviar Denúncia';
+        btn.classList.remove('loading');
+        form.reset();
+        $('#preview-container')?.classList.add('hidden');
+        $('#file-drop-zone')?.classList.remove('has-photo');
+      });
+    }
+
+    // ===================================================
+    // STATUS CHECK FORM
+    // ===================================================
+    function initFormStatus() {
+      const form = $('#form-status-check');
+      if (!form) return;
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const protocolo = $('#protocolo').value.trim();
+        const result = $('#status-result');
+        result.classList.remove('hidden');
+
+        if (!protocolo) {
+          showToast('Digite um protocolo para buscar.', 'error');
+          result.innerHTML = '<p class="error">Digite um protocolo válido.</p>';
+          return;
+        }
+
+        const clean = protocolo.replace('#', '');
+        const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
+        const found = denuncias.find(d => d.protocolo === clean);
+
+        if (found) {
+          result.innerHTML = `
+            <div class="status-card">
+              <p><strong>Protocolo:</strong> ${found.protocolo}</p>
+              <p><strong>Categoria:</strong> ${found.tipo}</p>
+              <p><strong>Denúncia:</strong> ${found.titulo}</p>
+              <p><strong>Data:</strong> ${found.data}</p>
+              <p><strong>Situação:</strong> <span class="badge">Registrada — aguardando análise</span></p>
+            </div>`;
+          showToast('Denúncia encontrada!', 'success');
         } else {
-          await fetch(APPSRIPT_URL, { method: 'POST', body: formData });
-          status.textContent = `Denúncia enviada com sucesso! Protocolo: ${protocolo}`;
+          result.innerHTML = '<p class="error">Protocolo não encontrado. Verifique os dados digitados.</p>';
+          showToast('Protocolo não encontrado.', 'error');
         }
-      } catch (err) {
-        status.textContent = 'Erro ao enviar. Verifique sua conexão e tente novamente.';
-        console.error(err);
-      }
+      });
+    }
 
-      status.classList.remove('hidden');
-      btn.disabled = false;
-      btn.textContent = 'Enviar Denúncia';
-      form.reset();
-      previewContainer.classList.add('hidden');
-    });
+    // ===================================================
+    // SMOOTH SCROLL FOR NAV LINKS
+    // ===================================================
+    function initSmoothScroll() {
+      $$('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          const target = document.querySelector(link.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    }
 
-    // Check status
-    document.getElementById('form-status-check').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const protocolo = document.getElementById('protocolo').value.trim();
-      const result = document.getElementById('status-result');
-      result.classList.remove('hidden');
-
-      if (!protocolo) {
-        result.innerHTML = '<p class="error">Digite um protocolo válido.</p>';
-        return;
-      }
-
-      const clean = protocolo.replace('#', '');
-      const denuncias = JSON.parse(localStorage.getItem('denuncias') || '[]');
-      const found = denuncias.find(d => d.protocolo === clean);
-
-      if (found) {
-        result.innerHTML = `
-          <div class="status-card">
-            <p><strong>Protocolo:</strong> ${found.protocolo}</p>
-            <p><strong>Categoria:</strong> ${found.tipo}</p>
-            <p><strong>Denúncia:</strong> ${found.titulo}</p>
-            <p><strong>Data:</strong> ${found.data}</p>
-            <p><strong>Situação:</strong> Registrada — aguardando análise</p>
-          </div>`;
-      } else {
-        result.innerHTML = '<p class="error">Protocolo não encontrado. Verifique os dados digitados.</p>';
-      }
+    // ===================================================
+    // INIT
+    // ===================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      initMobileMenu();
+      initNavScroll();
+      initPhotoUpload();
+      initFormDenuncia();
+      initFormStatus();
+      initSmoothScroll();
+      initReveal();
     });
   </script>
 </body>
